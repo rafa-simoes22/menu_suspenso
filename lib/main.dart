@@ -4,60 +4,98 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Emoções App',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      home: EmotionsScreen(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  String selectedOption = "Amigável";
-  String message = "Escolha uma opção";
+class EmotionsScreen extends StatefulWidget {
+  @override
+  _EmotionsScreenState createState() => _EmotionsScreenState();
+}
 
-  Map<String, Color> colorMap = {
-    "Amigável": Colors.orange,
-    "Em Paz": Colors.green,
-    "Confiante": Colors.blue,
-    "Animado": Colors.yellow,
-  };
+class _EmotionsScreenState extends State<EmotionsScreen> {
+  String selectedEmotion = "Amigável"; // Default emotion
+  Color backgroundColor = Colors.white;
+  Color fontColor = Colors.black;
 
-  void _onOptionChanged(String? option) {
-    if (option != null) {
-      setState(() {
-        selectedOption = option;
-        message = "Você está se sentindo $option!";
-      });
-    }
+  void updateEmotion(String emotion) {
+    setState(() {
+      selectedEmotion = emotion;
+      switch (emotion) {
+        case "Amigável":
+          backgroundColor = Colors.orange;
+          fontColor = Colors.white;
+          break;
+        case "Em paz":
+          backgroundColor = Colors.green;
+          fontColor = Colors.white;
+          break;
+        case "Confiante":
+          backgroundColor = Colors.blue;
+          fontColor = Colors.white;
+          break;
+        case "Animado":
+          backgroundColor = Colors.yellow;
+          fontColor = Colors.black;
+          break;
+        default:
+          backgroundColor = Colors.white;
+          fontColor = Colors.black;
+          break;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Menu Suspenso"),
-        ),
-        backgroundColor: Colors.black,
-        body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Emoções App'),
+      ),
+      body: Container(
+        color: backgroundColor,
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               DropdownButton<String>(
-                value: selectedOption,
-                onChanged: _onOptionChanged,
-                items: ["Amigável", "Em Paz", "Confiante", "Animado"]
-                    .map((String option) {
-                  return DropdownMenuItem<String>(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList(),
+                value: selectedEmotion,
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    updateEmotion(newValue);
+                  }
+                },
+                items: <String>[
+                  'Amigável',
+                  'Em paz',
+                  'Confiante',
+                  'Animado',
+                ].map<DropdownMenuItem<String>>(
+                  (String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  },
+                ).toList(),
               ),
               SizedBox(height: 20),
               Text(
-                message,
+                "Mensagem de $selectedEmotion",
                 style: TextStyle(
+                  color: fontColor,
                   fontSize: 20,
-                  color: colorMap[selectedOption],
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
