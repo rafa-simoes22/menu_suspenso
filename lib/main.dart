@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("Menu Suspenso"),
         ),
+        backgroundColor: Colors.black,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
