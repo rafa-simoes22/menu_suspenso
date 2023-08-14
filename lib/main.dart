@@ -26,10 +26,12 @@ class _EmotionsScreenState extends State<EmotionsScreen> {
   String? selectedEmotion; // Default: None selected
   Color backgroundColor = Colors.white;
   Color fontColor = Colors.black;
+  String currentMessage = "Selecione uma opção"; // Default message
 
-  void updateEmotion(String emotion) {
+  void updateEmotion(String emotion, String message) {
     setState(() {
       selectedEmotion = emotion;
+      currentMessage = message; // Update the message based on the emotion
       switch (emotion) {
         case "Amigável":
           backgroundColor = Colors.orange;
@@ -73,7 +75,22 @@ class _EmotionsScreenState extends State<EmotionsScreen> {
                 value: selectedEmotion,
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    updateEmotion(newValue);
+                    String message = ""; // Default message for the selected emotion
+                    switch (newValue) {
+                      case "Amigável":
+                        message = "Você está se sentindo amigável.";
+                        break;
+                      case "Em paz":
+                        message = "Você está se sentindo em paz.";
+                        break;
+                      case "Confiante":
+                        message = "Você está se sentindo confiante.";
+                        break;
+                      case "Animado":
+                        message = "Você está se sentindo animado.";
+                        break;
+                    }
+                    updateEmotion(newValue, message);
                   }
                 },
                 items: <String>[
@@ -90,16 +107,15 @@ class _EmotionsScreenState extends State<EmotionsScreen> {
                   },
                 ).toList(),
               ),
-              if (selectedEmotion != null)
-                SizedBox(height: 20),
-                Text(
-                  "Mensagem de $selectedEmotion",
-                  style: TextStyle(
-                    color: fontColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              SizedBox(height: 20),
+              Text(
+                currentMessage,
+                style: TextStyle(
+                  color: fontColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
             ],
           ),
         ),
