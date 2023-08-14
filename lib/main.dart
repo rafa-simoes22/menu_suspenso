@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Emoções App',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.blue,
       ),
       home: EmotionsScreen(),
     );
@@ -23,7 +23,7 @@ class EmotionsScreen extends StatefulWidget {
 }
 
 class _EmotionsScreenState extends State<EmotionsScreen> {
-  String selectedEmotion = "Amigável"; // Default emotion
+  String? selectedEmotion; // Default: None selected
   Color backgroundColor = Colors.white;
   Color fontColor = Colors.black;
 
@@ -69,6 +69,7 @@ class _EmotionsScreenState extends State<EmotionsScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               DropdownButton<String>(
+                hint: Text("Selecione"), // Initial hint
                 value: selectedEmotion,
                 onChanged: (String? newValue) {
                   if (newValue != null) {
@@ -89,15 +90,16 @@ class _EmotionsScreenState extends State<EmotionsScreen> {
                   },
                 ).toList(),
               ),
-              SizedBox(height: 20),
-              Text(
-                "Mensagem de $selectedEmotion",
-                style: TextStyle(
-                  color: fontColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              if (selectedEmotion != null)
+                SizedBox(height: 20),
+                Text(
+                  "Mensagem de $selectedEmotion",
+                  style: TextStyle(
+                    color: fontColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
